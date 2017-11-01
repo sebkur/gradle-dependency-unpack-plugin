@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <name>Topobyte Dependency Unpack Gradle Plugin</name>
+  <description>A plugin for displaying information about dependencies</description>
+  <url>https://github.com/sebkur/gradle-dependency-unpack-plugin</url>
+</project>

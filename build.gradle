@@ -1,0 +1,87 @@
+task wrapper(type: Wrapper) {
+	gradleVersion = '3.5'
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'com.gradle.plugin-publish'
+
+group = pGroup
+version = pVersion
+description = pDescription
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+buildscript {
+	dependencies {
+		classpath 'junit:junit:4.12'
+		classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
+	}
+	repositories {
+		mavenCentral()
+		maven {
+			url 'https://plugins.gradle.org/m2/'
+		}
+	}
+}
+
+repositories {
+	jcenter()
+	mavenCentral()
+}
+
+dependencies {
+	compile gradleApi()
+	compile localGroovy()
+
+    compile 'commons-io:commons-io:2.6'
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+pluginBundle {
+  website = 'http://www.topobyte.de'
+  vcsUrl = 'https://github.com/sebkur/gradle-dependency-unpack-plugin'
+  description = 'Topobyte dependency unpack plugin'
+
+  plugins {
+    depUnpackPlugin {
+      id = 'de.topobyte.dependency-unpack-gradle-plugin'
+      displayName = 'Topobyte dependency unpack plugin'
+    }
+  }
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'file://localhost/tmp/maven-repo')
+        }
+    }
+}
+
+def pomInfo = new XmlSlurper().parse(new File('info.pom'));
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                pom.project {
+                    name pomInfo.name
+                    description pomInfo.description
+                    url pomInfo.url
+                }
+            }
+        }
+    }
+}

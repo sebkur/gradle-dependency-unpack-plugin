@@ -9,9 +9,19 @@ import org.gradle.api.artifacts.DependencySet;
 import org.gradle.api.artifacts.ResolvedArtifact;
 import org.gradle.api.artifacts.component.ComponentArtifactIdentifier;
 import org.gradle.api.artifacts.component.ModuleComponentIdentifier;
+import org.gradle.api.artifacts.dsl.DependencyHandler;
+import org.gradle.api.artifacts.query.ArtifactResolutionQuery;
+import org.gradle.api.artifacts.result.ArtifactResolutionResult;
+import org.gradle.api.artifacts.result.ArtifactResult;
+import org.gradle.api.artifacts.result.ComponentArtifactsResult;
+import org.gradle.api.artifacts.result.ResolvedArtifactResult;
+import org.gradle.api.component.Artifact;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.tasks.TaskAction;
+import org.gradle.internal.component.external.model.DefaultModuleComponentIdentifier;
 import org.gradle.internal.component.external.model.ModuleComponentArtifactIdentifier;
+import org.gradle.jvm.JvmLibrary;
+import org.gradle.language.base.artifact.SourcesArtifact;
 
 public class DepUnpackTask extends AbstractDepUnpackTask
 {
@@ -71,10 +81,38 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 				version, extension, artifact.getFile()));
 	}
 
+	private void printInfo(String group, String module, String version,
+			ResolvedArtifactResult resolvedSourceResult)
+	{
+		System.out.println(String.format("%s:%s:%s %s", group, module, version,
+				resolvedSourceResult.getFile()));
+	}
+
 	private void resolveSource(String group, String module, String version)
 	{
 		Project project = getProject();
-		// TODO: somehow request the path of the respective GAV source artifact
+		DependencyHandler handler = project.getDependencies();
+
+		DefaultModuleComponentIdentifier id = new DefaultModuleComponentIdentifier(
+				group, module, version);
+
+		Class<? extends Artifact>[] classes = new Class[] {
+				SourcesArtifact.class };
+
+		ArtifactResolutionQuery query = handler.createArtifactResolutionQuery()
+				.forComponents(id).withArtifacts(JvmLibrary.class, classes);
+		ArtifactResolutionResult result = query.execute();
+
+		for (ComponentArtifactsResult resolved : result
+				.getResolvedComponents()) {
+			for (ArtifactResult sourceResult : resolved
+					.getArtifacts(SourcesArtifact.class)) {
+				if (sourceResult instanceof ResolvedArtifactResult) {
+					ResolvedArtifactResult resolvedSourceResult = (ResolvedArtifactResult) sourceResult;
+					printInfo(group, module, version, resolvedSourceResult);
+				}
+			}
+		}
 	}
 
 }

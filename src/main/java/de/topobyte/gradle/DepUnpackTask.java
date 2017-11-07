@@ -70,7 +70,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 		});
 
 		File buildDir = project.getBuildDir();
-		File output = new File(buildDir, "unpackedJars");
+		File output = new File(buildDir, Constants.DIR_NAME_UNPACKED_JARS);
 		output.mkdirs();
 
 		Set<ResolvedArtifact> artifacts = configuration

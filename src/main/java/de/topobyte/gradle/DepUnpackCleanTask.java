@@ -25,7 +25,7 @@ public class DepUnpackCleanTask extends AbstractDepUnpackTask
 
 	private void clean(Path directory)
 	{
-		logger.info("cleaning: " + directory);
+		logger.lifecycle("cleaning: " + directory);
 		FileUtils.deleteQuietly(directory.toFile());
 	}
 

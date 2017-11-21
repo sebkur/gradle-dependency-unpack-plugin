@@ -53,7 +53,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 		if (configuration.isDebug()) {
 			SortedSet<String> names = project.getConfigurations().getNames();
 			for (String name : names) {
-				System.out.println(name);
+				logger.info(name);
 			}
 		}
 
@@ -66,13 +66,12 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 			String group = d.getGroup();
 			String module = d.getName();
 			String version = d.getVersion();
-			System.out
-					.println(String.format("%s:%s:%s", group, module, version));
+			logger.info(String.format("%s:%s:%s", group, module, version));
 		});
 
 		File buildDir = project.getBuildDir();
 		File output = new File(buildDir, Constants.DIR_NAME_UNPACKED_JARS);
-		System.out.println("unpacking to: " + output);
+		logger.lifecycle("unpacking to: " + output);
 		output.mkdirs();
 
 		Set<ResolvedArtifact> artifacts = configuration
@@ -87,29 +86,29 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 				String version = mci.getVersion();
 				if (group.equals("org.jsweet")
 						&& module.equals("jsweet-core")) {
-					System.out.println(String.format("JSweet core: %s:%s:%s",
+					logger.lifecycle(String.format("JSweet core: %s:%s:%s",
 							group, module, version));
 					continue;
 				}
 				if (isCandyJar(artifact)) {
-					System.out.println(String.format("Candy: %s:%s:%s", group,
+					logger.lifecycle(String.format("Candy: %s:%s:%s", group,
 							module, version));
 					continue;
 				}
-				System.out.println(String.format("Normal: %s:%s:%s", group,
+				logger.lifecycle(String.format("Normal: %s:%s:%s", group,
 						module, version));
 
 				List<ResolvedArtifactResult> sources = resolveSource(group,
 						module, version);
 				if (sources.isEmpty()) {
-					System.out.println("no source found");
+					logger.warn("no source found");
 				}
 				for (ResolvedArtifactResult resolvedSourceResult : sources) {
 					printInfo(group, module, version, resolvedSourceResult);
 					try {
 						unpack(resolvedSourceResult.getFile(), output);
 					} catch (IOException e) {
-						System.out.println("Error while unpacking "
+						logger.warn("Error while unpacking "
 								+ resolvedSourceResult.getFile());
 						e.printStackTrace();
 					}
@@ -136,7 +135,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 	private void printInfo(String group, String module, String version,
 			ResolvedArtifactResult resolvedSourceResult)
 	{
-		System.out.println(String.format("%s:%s:%s %s", group, module, version,
+		logger.info(String.format("%s:%s:%s %s", group, module, version,
 				resolvedSourceResult.getFile()));
 	}
 
@@ -181,7 +180,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 			String fileName = entry.getName();
 			File file = new File(output, fileName);
 
-			System.out.println("unzip: " + file.getAbsoluteFile());
+			logger.info("unzip: " + file.getAbsoluteFile());
 			if (entry.isDirectory()) {
 				file.mkdirs();
 			} else {

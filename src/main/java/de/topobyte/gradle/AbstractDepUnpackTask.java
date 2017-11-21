@@ -1,12 +1,12 @@
 package de.topobyte.gradle;
 
-import org.apache.log4j.Logger;
 import org.gradle.api.internal.ConventionTask;
+import org.gradle.api.logging.Logger;
 
 public abstract class AbstractDepUnpackTask extends ConventionTask
 {
 
-	protected final Logger logger = Logger.getLogger(getClass());
+	protected final Logger logger = getLogger();
 
 	protected DepUnpackPluginExtension configuration;
 

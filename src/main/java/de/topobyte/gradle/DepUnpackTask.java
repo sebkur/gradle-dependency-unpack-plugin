@@ -53,7 +53,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 		if (configuration.isDebug()) {
 			SortedSet<String> names = project.getConfigurations().getNames();
 			for (String name : names) {
-				logger.info(name);
+				logger.info("configuration: " + name);
 			}
 		}
 

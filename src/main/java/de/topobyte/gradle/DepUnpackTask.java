@@ -15,6 +15,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
 import org.gradle.api.artifacts.DependencySet;
@@ -196,12 +197,8 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 
 	private void unpack(ZipInputStream zis, File file) throws IOException
 	{
-		byte[] buffer = new byte[1024];
 		OutputStream fos = new FileOutputStream(file);
-		int len;
-		while ((len = zis.read(buffer)) > 0) {
-			fos.write(buffer, 0, len);
-		}
+		IOUtils.copyLarge(zis, fos);
 		fos.close();
 	}
 

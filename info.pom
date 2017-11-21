@@ -3,4 +3,7 @@
   <name>Topobyte Dependency Unpack Gradle Plugin</name>
   <description>A plugin for displaying information about dependencies</description>
   <url>https://github.com/sebkur/gradle-dependency-unpack-plugin</url>
+  <licenseName>GNU Lesser General Public License (LGPL), Version 3</licenseName>
+  <licenseUrl>https://www.gnu.org/licenses/lgpl-3.0.txt</licenseUrl>
+  <licenseDistribution>repo</licenseDistribution>
 </project>

@@ -18,7 +18,8 @@ public class DepUnpackCleanTask extends AbstractDepUnpackTask
 	protected void clean()
 	{
 		File buildDir = getProject().getBuildDir();
-		Path unpack = buildDir.toPath().resolve("unpack");
+		Path unpack = buildDir.toPath()
+				.resolve(Constants.DIR_NAME_UNPACKED_JARS);
 		clean(unpack);
 	}
 

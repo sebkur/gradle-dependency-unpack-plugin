@@ -15,6 +15,11 @@ description = pDescription
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+if (project.hasProperty("topobyte")) {
+    apply from: 'file:///' + System.getProperty("user.home") \
+        + '/.gradle/topobyte.gradle'
+}
+
 buildscript {
 	dependencies {
 		classpath 'junit:junit:4.12'
@@ -60,14 +65,6 @@ pluginBundle {
 
 artifacts {
     archives sourcesJar
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: 'file://localhost/tmp/maven-repo')
-        }
-    }
 }
 
 def pomInfo = new XmlSlurper().parse(new File('info.pom'));

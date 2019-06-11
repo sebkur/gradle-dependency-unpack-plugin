@@ -163,7 +163,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 		DependencyHandler handler = project.getDependencies();
 
 		DefaultModuleComponentIdentifier id = new DefaultModuleComponentIdentifier(
-				group, module, version);
+				new MavenGroup(group, module), version);
 
 		Class<? extends Artifact>[] classes = new Class[] {
 				SourcesArtifact.class };

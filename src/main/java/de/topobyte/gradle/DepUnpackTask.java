@@ -58,7 +58,6 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 
 	public DepUnpackTask()
 	{
-		dependsOn(JavaPlugin.CLASSES_TASK_NAME);
 		setGroup("info");
 	}
 

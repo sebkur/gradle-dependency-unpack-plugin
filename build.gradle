@@ -21,26 +21,26 @@ if (project.hasProperty("topobyte")) {
 }
 
 buildscript {
-	dependencies {
-		classpath 'junit:junit:4.12'
-		classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
-	}
-	repositories {
-		mavenCentral()
-		maven {
-			url 'https://plugins.gradle.org/m2/'
-		}
-	}
+    dependencies {
+        classpath 'junit:junit:4.12'
+        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
 }
 
 repositories {
-	jcenter()
-	mavenCentral()
+    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-	compile gradleApi()
-	compile localGroovy()
+    compile gradleApi()
+    compile localGroovy()
 
     compile 'commons-io:commons-io:2.6'
 }

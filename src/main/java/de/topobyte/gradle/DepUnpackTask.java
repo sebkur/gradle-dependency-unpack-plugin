@@ -73,7 +73,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 			}
 		}
 
-		String configName = getConfiguration().getConfiguration();
+		String configName = configuration.getConfiguration();
 
 		Configuration configuration = project.getConfigurations()
 				.getByName(configName);

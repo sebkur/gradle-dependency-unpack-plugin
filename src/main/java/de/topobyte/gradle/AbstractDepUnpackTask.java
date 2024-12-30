@@ -27,11 +27,6 @@ public abstract class AbstractDepUnpackTask extends ConventionTask
 
 	protected DepUnpackPluginExtension configuration;
 
-	public DepUnpackPluginExtension getConfiguration()
-	{
-		return configuration;
-	}
-
 	public void setConfiguration(DepUnpackPluginExtension configuration)
 	{
 		this.configuration = configuration;

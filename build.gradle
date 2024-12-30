@@ -1,19 +1,20 @@
+import groovy.xml.XmlSlurper
+
 wrapper {
-    gradleVersion = '5.2.1'
+    gradleVersion = '8.3'
 }
 
-apply plugin: 'java'
-apply plugin: 'groovy'
 apply plugin: 'eclipse'
-apply plugin: 'maven'
 apply plugin: 'com.gradle.plugin-publish'
 
 group = pGroup
 version = pVersion
 description = pDescription
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
 
 if (project.hasProperty("topobyte")) {
     apply from: 'file:///' + System.getProperty("user.home") \
@@ -23,7 +24,7 @@ if (project.hasProperty("topobyte")) {
 buildscript {
     dependencies {
         classpath 'junit:junit:4.12'
-        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
+        classpath 'com.gradle.publish:plugin-publish-plugin:1.2.2'
     }
     repositories {
         mavenCentral()
@@ -34,58 +35,63 @@ buildscript {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
 }
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-
-    compile 'commons-io:commons-io:2.6'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-pluginBundle {
-  website = 'http://www.topobyte.de'
-  vcsUrl = 'https://github.com/sebkur/gradle-dependency-unpack-plugin'
-  description = 'Topobyte dependency unpack plugin'
-
-  plugins {
-    depUnpackPlugin {
-      id = 'de.topobyte.dependency-unpack-gradle-plugin'
-      displayName = 'Topobyte dependency unpack plugin'
-    }
-  }
-}
-
-artifacts {
-    archives sourcesJar
+    implementation 'commons-io:commons-io:2.6'
 }
 
 def pomInfo = new XmlSlurper().parse(new File('info.pom'));
 
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                pom.project {
-                    name pomInfo.name
-                    description pomInfo.description
-                    url pomInfo.url
-                    licenses {
-                        license {
-                            name pomInfo.licenseName
-                            url pomInfo.licenseUrl
-                            distribution pomInfo.licenseDistribution
-                        }
+gradlePlugin {
+    website = 'http://www.topobyte.de'
+    vcsUrl = 'https://github.com/sebkur/gradle-dependency-unpack-plugin'
+    description = 'Topobyte dependency unpack plugin'
+
+    plugins {
+        depInfoPlugin {
+            id = 'de.topobyte.dependency-unpack-gradle-plugin'
+            displayName = "$pomInfo.name"
+            implementationClass = 'de.topobyte.gradle.DepUnpackPlugin'
+            description = "$pomInfo.description"
+            website = "$pomInfo.url"
+        }
+    }
+}
+
+tasks.withType(Javadoc).configureEach {
+    enabled = false
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            pom {
+                name = "$pomInfo.name"
+                description = "$pomInfo.description"
+                url = "$pomInfo.url"
+                licenses {
+                    license {
+                        name = "$pomInfo.licenseName"
+                        url = "$pomInfo.licenseUrl"
+                        distribution = "$pomInfo.licenseDistribution"
                     }
                 }
             }
         }
+    }
+}
+
+if (project.hasProperty("publishForTesting")) {
+    publishing {
+        repositories {
+            maven {
+                url = 'maven-repo'
+            }
+        }
+    }
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
     }
 }

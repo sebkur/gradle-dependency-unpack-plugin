@@ -50,7 +50,7 @@ gradlePlugin {
     description = 'Topobyte dependency unpack plugin'
 
     plugins {
-        depInfoPlugin {
+        depUnpackPlugin {
             id = 'de.topobyte.dependency-unpack-gradle-plugin'
             displayName = "$pomInfo.name"
             implementationClass = 'de.topobyte.gradle.DepUnpackPlugin'

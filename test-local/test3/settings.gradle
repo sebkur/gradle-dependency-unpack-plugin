@@ -1,0 +1,10 @@
+pluginManagement {
+    repositories {
+        maven { url '../../maven-repo' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://mvn.topobyte.de' }
+    }
+}
+
+include 'core'
+project(':core').name = 'test-core'

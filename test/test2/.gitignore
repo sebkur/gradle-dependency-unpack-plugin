@@ -1,0 +1,11 @@
+bin/
+build/
+.gradle
+.project
+.classpath
+.settings
+*.swp
+/*.sqlite
+/*.sqlite-journal
+/*.sqlite.bak*
+/*.sqlite.old*

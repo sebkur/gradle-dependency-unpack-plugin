@@ -1,0 +1,25 @@
+dependencies {
+    implementation 'com.google.guava:guava:19.0'
+    implementation 'org.apache.commons:commons-lang3:3.17.0'
+    testImplementation 'junit:junit:4.12'
+}
+
+eclipse.project.name = 'dependency-unpack-gradle-plugin-test2'
+
+depunpack {
+    configuration "runtimeClasspath"
+}
+
+task copyJars(type: Copy) {
+    into "$buildDir/lib-run"
+    from jar
+}
+
+task copyDeps(type: Copy) {
+    into "$buildDir/lib-run"
+    from configurations.runtimeClasspath
+}
+
+task createRuntime(dependsOn: [copyJars, copyDeps]) {
+    description 'Setup the execution environment for the main scripts'
+}

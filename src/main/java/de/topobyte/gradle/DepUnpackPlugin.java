@@ -48,11 +48,12 @@ public class DepUnpackPlugin implements Plugin<Project>
 
 		DepUnpackTask task = project.getTasks().create("depunpack",
 				DepUnpackTask.class);
-		task.setDescription("Fetches and unpacks the source jars of all project dependencies");
+		task.setDescription("Fetches and unpacks the source jars of all project dependencies.");
 		task.setConfiguration(extension);
 
 		DepUnpackCleanTask cleanTask = project.getTasks()
 				.create("depunpackClean", DepUnpackCleanTask.class);
+		cleanTask.setDescription("Deletes the directory where dependencies get unpacked to.");
 		cleanTask.setConfiguration(extension);
 
 		// register the directory with unpacked jars as a source set

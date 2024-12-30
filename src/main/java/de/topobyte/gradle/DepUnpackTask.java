@@ -58,7 +58,7 @@ public class DepUnpackTask extends AbstractDepUnpackTask
 
 	public DepUnpackTask()
 	{
-		setGroup("info");
+		setGroup("build");
 	}
 
 	@TaskAction

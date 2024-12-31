@@ -5,7 +5,7 @@ buildscript {
         maven { url 'https://mvn.topobyte.de' }
     }
     dependencies {
-        classpath 'de.topobyte:gradle-dependency-unpack-plugin:0.0.2'
+        classpath 'de.topobyte:gradle-dependency-unpack-plugin:0.0.3'
     }
 }
 
